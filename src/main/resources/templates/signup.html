@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/signup.css">
+    <title>Sign Up</title>
+</head>
+<body>
+    <div id="logreg-forms">
+        <form th:action="@{/signup}" class="form-signup" method="post" th:object="${taikhoan}">
+            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Sign up</h1>
+            <input type="text" name="user" id="user-name" class="form-control" placeholder="Username" required autofocus th:field="*{username}">
+            <input type="email" name="email" id="email" class="form-control" placeholder="Email" required th:field="*{email}">
+            <input type="text" name="hovaten" id="hovaten" class="form-control" placeholder="Fullname" required th:field="*{hovaten}">
+            <input type="password" name="password" id="user-pass" class="form-control" placeholder="Password" required th:field="*{password}">
+            <input type="password" name="repeatpassword" id="user-repeatpass" class="form-control" placeholder="Repeat Password" required th:field="*{repeatPassword}">
+            <div th:if="${error}" class="alert alert-danger mt-3" role="alert" th:text="${error}"></div>
+            <button class="btn btn-primary btn-block" type="submit"><i class="fas fa-user-plus"></i> Sign Up</button>
+            <a href="#" id="cancel_signup"><i class="fas fa-angle-left"></i> Back</a>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#cancel_signup').click(function(e) {
+                e.preventDefault();
+                window.history.back();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/0faddc1af8.js" crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+     <style>
+        .card-img-top {
+            width: 100%;
+            height: 200px; /* Adjust height as needed */
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <th:block th:include="header.html"></th:block>
+    <div class="container">
+        <div class="row">
+            <th:block th:include="left.html"></th:block>
+            <div class="col-sm-9">
+                <div class="row" th:if="${book != null}">
+                    <th:block th:each="b : ${book}">
+                        <div class="col-4">
+                            <div class="card">
+                            <img class="card-img-top" alt="" th:if="${b.image != null and b.image.startsWith('http')}"
+										th:src="${b.image}" />
+									
+									<!-- Nếu không phải đường dẫn HTTP, có thể hiển thị một hình ảnh mặc định hoặc thông báo khác -->
+								<img class="card-img-top" alt="" th:if="${b.image != null and !b.image.startsWith('http')}"
+     th:src="@{'/uploads/' + ${b.image}}" />
+                                <div class="card-body">
+                                    <h4 class="card-title show_txt">
+                                        <a th:href="@{/detail/{id}(id=${b.id})}" title="View Book" th:text="${b.name}">Book Title</a>
+                                    </h4>
+                                    <p class="card-text" th:text="${b.author}">Author</p>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="card-text" th:text="${b.price} + ' $'">Price</p>
+                                        </div>
+                                        <div class="col">
+                                            <a th:href="@{/addToCart/{id}(id=${b.id})}" class="btn btn-success btn-block">Add to cart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+                <div th:if="${book == null}">
+                    <p>No books available.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="col-sm-3">
+		<div class="card bg-light mb-3">
+			<div class="card-header bg-primary text-white text-uppercase">
+				<i class="fa fa-list"></i> Categories
+			</div>
+			<ul class="list-group category_block">
+				<th:block th:each="c : ${cate}">
+					<li class="list-group-item text-white"
+						th:classappend="${tag == c.id}?'active':''"><a
+						th:href="@{/category/{id}(id=${c.id})}" th:text="${c.name}"
+						style="color: black;"></a></li>
+				</th:block>
+			</ul>
+		</div>
+		<div class="card bg-light mb-3">
+			<div class="card-header bg-success text-white text-uppercase">Last
+				book</div>
+			<div class="card-body">
+				<img id="product-image" class="card-img-top" alt=""
+					th:if="${l.image != null and l.image.startsWith('http')}"
+					th:src="${l.image}" /> <img id="product-image"
+					th:if="${l.image != null && !l.image.startsWith('http')}"
+					th:src="@{'/uploads/' + ${l.image}}" alt="Product Image"
+					class="card-img-top">
+                <a th:href="@{/detail/{id}(id=${l.id})}" title="View Book" th:text="${l.name}">Book Title</a>
+                <p class="card-text" th:text="${l.author}">Author</p>
+				<p class="bloc_left_price" th:text="${l.price}+' $'">${p.price}</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

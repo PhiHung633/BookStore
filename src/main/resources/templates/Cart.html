@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Shopping Cart</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/0faddc1af8.js"
+	crossorigin="anonymous"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet"
+	integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+	crossorigin="anonymous">
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<style>
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+@media ( min-width : 1025px) {
+	.h-custom {
+		height: 100vh !important;
+	}
+}
+
+.card-img-top {
+	width: 120px;
+	height: 120px;
+	object-fit: cover;
+}
+
+.table td, .table th {
+	vertical-align: middle;
+}
+
+.btn-link {
+	color: #000;
+}
+
+.btn-link:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+h3 {
+	margin-bottom: 30px;
+}
+
+.card {
+	margin-bottom: 30px;
+}
+</style>
+</head>
+<body>
+	<th:block th:include="header.html"></th:block>
+
+	<section class="h-100 h-custom">
+		<div class="container h-100 py-5">
+			<div
+				class="row d-flex justify-content-center align-items-center h-100">
+				<div class="col-lg-8 col-xl-6">
+
+					<div class="card shadow-2-strong">
+						<div class="card-body p-5">
+
+							<h3 class="mb-4 text-center">Shopping Cart</h3>
+
+							<div class="table-responsive">
+
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col" class="h5">Item</th>
+											<th scope="col">Quantity</th>
+											<th scope="col">Price</th>
+										</tr>
+									</thead>
+									<tbody>
+										<div class="row" th:if="${book != null}">
+											<th:block th:each="b : ${book}">
+												<tr>
+													<th scope="row">
+														<div class="d-flex align-items-center">
+															<img class="card-img-top" alt=""
+																th:if="${b.image != null and b.image.startsWith('http')}"
+																th:src="${b.image}" /> <img class="card-img-top" alt=""
+																th:if="${b.image != null and !b.image.startsWith('http')}"
+																th:src="@{'/uploads/' + ${b.image}}" />
+															<div class="ms-3">
+																<p class="mb-2" th:text="${b.name}"></p>
+																<p class="mb-0" th:text="${b.author}"></p>
+															</div>
+														</div>
+													</th>
+													<td class="align-middle">
+														<div class="d-flex flex-row">
+															<button class="btn btn-link px-2"
+																onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+																<i class="fas fa-minus"></i>
+															</button>
+															<input id="form1" min="0" name="quantity"
+																th:value="${bookQuantityMap[__${b.id}__]}" type="number"
+																th:data-price="${b.price}"
+																class="form-control form-control-sm"
+																style="width: 50px;" />
+															<button class="btn btn-link px-2"
+																onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+																<i class="fas fa-plus"></i>
+															</button>
+														</div>
+													</td>
+													<td class="align-middle">
+														<p class="mb-0" style="font-weight: 500;"
+															th:text="${b.price} + ' $'"></p>
+													</td>
+												</tr>
+											</th:block>
+										</div>
+									</tbody>
+								</table>
+
+							</div>
+
+							<hr class="my-4">
+
+							<div class="d-flex justify-content-between">
+								<p class="mb-2">Total</p>
+								<p class="mb-2" id="subtotal"></p>
+							</div>
+
+							<a th:href="@{/deleteCart/{id}(id=${tk.id})}" class="btn btn-success btn-block" style="text-align: left;">
+    								<span>Checkout</span>
+    								<span id="checkoutTotal" style="float: right;">$26.48</span>
+							</a>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+		document.addEventListener("DOMContentLoaded",
+				function() {
+					var subtotal = 0;
+					var quantities = document.getElementsByName("quantity");
+
+					for (var i = 0; i < quantities.length; i++) {
+						var quantity = parseInt(quantities[i].value);
+						var price = parseFloat(quantities[i]
+								.getAttribute('data-price'));
+						subtotal += quantity * price;
+					}
+
+					document.getElementById("subtotal").textContent = "$"
+							+ subtotal;
+				});
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded",
+				function() {
+					var subtotal = 0;
+					var quantities = document.getElementsByName("quantity");
+
+					for (var i = 0; i < quantities.length; i++) {
+						var quantity = parseInt(quantities[i].value);
+						var price = parseFloat(quantities[i]
+								.getAttribute('data-price'));
+						subtotal += quantity * price;
+					}
+
+					document.getElementById("checkoutTotal").textContent = "$"
+							+ subtotal;
+				});
+	</script>
+	<script src="https://kit.fontawesome.com/a076d05399.js"
+		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
